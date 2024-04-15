@@ -1,0 +1,42 @@
+# Disable directory indexing and browsing
+Options -Indexes
+
+# Disable XML-RPC requests 
+<Files xmlrpc.php> 
+order deny,allow
+deny from all
+</Files>
+
+# Block wp-config.php
+<Files wp-config.php>
+order allow,deny
+deny from all
+</Files>
+
+# Block all .htaccess files
+<files ~ "^.*\.([Hh][Tt][Aa])">
+order allow,deny
+deny from all
+satisfy all
+</files>
+
+# Block other files
+<Files .svn,error_log>
+order allow,deny
+deny from all
+</Files>
+<files readme.txt>
+order allow,deny
+deny from all
+</files>
+<files readme.html>
+order allow,deny
+deny from all
+</files>
+
+# Username / attchment enumeration protection
+<IfModule mod_rewrite.c>
+RewriteCond %{QUERY_STRING} author=([0-9]*) [OR]
+RewriteCond %{QUERY_STRING} attachment_id=([0-9]*)
+RewriteRule ^(.*)$ /index.php [F,L]
+</IfModule>
